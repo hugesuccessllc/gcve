@@ -7,7 +7,7 @@ Currently, I've got:
   - `aha-gcve-schema.json` : How to read and write AHA! originated GCVE records.
   - `test-gcve-sample.json` : A test GCVE record conforming to the AHA! format. **Not for production!**
   - `tools/aha-gcve-validator.rb` : A basic validator for those two things.
-  - `tools/aha-gcveify.rb` : A converter for standard CVE records to GCVE records.
+  - `tools/aha-gcveify.rb` : A converter for standard CVE records to AHA!-flavored GCVE records. Adjust to taste if you want to use it.
   - `tools/worker.js` : The Cloudflare Worker script running at https://aha-gcve.todb.workers.dev/ which implements the minimum required API for GCVE tooling.
 
 Enjoy! Not fit for any purpose, 2-Clause BSD licensed, etc.
