@@ -14,47 +14,67 @@ async function handleRequest(request) {
   // Fetch and parse NDJSON once per request
   const ndjsonResp = await fetch(DUMP_URL);
   const text = await ndjsonResp.text();
-  const objects = text
+  let objects = text
     .split("\n")
     .filter((line) => line.trim().length > 0)
-    .map((line) => JSON.parse(line));
+    .map((line) => {
+      try {
+        return JSON.parse(line);
+      } catch (e) {
+        return null;
+      }
+    })
+    .filter(
+      (obj) =>
+        obj && obj.datePublic && !isNaN(new Date(obj.datePublic).getTime()),
+    );
+
+  // Sort descending by datePublic
+  objects.sort((a, b) => new Date(b.datePublic) - new Date(a.datePublic));
 
   let result = [];
 
+  // /api/vulnerability/recent
   if (pathname.startsWith("/api/vulnerability/recent")) {
-    // Return vulnerabilities after a given date
-    const sinceDate = params.get("since"); // ISO 8601 string or YYYY-MM-DD
+    const sinceParam = params.get("since"); // ISO 8601 string or YYYY-MM-DD
     const limit = parseInt(params.get("limit") || "10", 10);
 
-    result = objects.filter((obj) => {
-      if (!sinceDate) return true;
-      return new Date(obj.datePublic) >= new Date(sinceDate);
-    });
+    let sinceDate;
+    if (sinceParam) {
+      const parsed = new Date(sinceParam);
+      sinceDate = isNaN(parsed.getTime())
+        ? new Date(Date.now() - 24 * 60 * 60 * 1000)
+        : parsed;
+    } else {
+      sinceDate = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24h ago
+    }
 
+    result = objects.filter((obj) => new Date(obj.datePublic) >= sinceDate);
     result = result.slice(0, limit);
+
     return new Response(JSON.stringify(result), {
       headers: { "Content-Type": "application/json" },
     });
   }
 
+  // /api/vulnerability/last
   if (pathname.startsWith("/api/vulnerability/last")) {
-    // Return latest N vulnerabilities
     const limit = parseInt(params.get("limit") || "10", 10);
-    result = objects.slice(-limit);
+    result = objects.slice(0, limit);
     return new Response(JSON.stringify(result), {
       headers: { "Content-Type": "application/json" },
     });
   }
 
+  // /dumps/gna-1337.ndjson
   if (pathname === "/dumps/gna-1337.ndjson") {
-    // Serve the raw NDJSON dump
     return new Response(text, {
       headers: { "Content-Type": "application/x-ndjson" },
     });
   }
 
-  // Fallback for unknown routes
-  return new Response(JSON.stringify({ error: "Not found" }), {
+  // Fail everything else.
+  return new Response(JSON.stringify({ error: "Dangit Bobby!" }), {
     status: 404,
     headers: { "Content-Type": "application/json" },
   });
