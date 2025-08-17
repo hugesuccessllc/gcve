@@ -16,7 +16,7 @@ Enjoy! Not fit for any purpose, 2-Clause BSD licensed, etc.
 
 AHA!'s GCVEness is expressed across several domains at the moment:
 
-- [takeonme.org] : Where most of AHA! stuff happens.
-- [hugesuccess.org] : Tod's internet-exposed sandbox for web shenanigans.
-- [aha-gcve.todb.workers.dev] : A free way to fake up an API for GCVE. Capped at 10,000 requests or some such.
-- [gcve.eu] : Where most GCVE things happen.
+- [takeonme.org](https://takeonme.org) : Where most of AHA! stuff happens.
+- [hugesuccess.org](https://hugesuccess.org) : Tod's internet-exposed sandbox for web shenanigans.
+- `aha-gcve.todb.workers.dev` : A free way to fake up an API for GCVE. Capped at 10,000 requests or some such.
+- [gcve.eu](https://gcve.eu) : Where most GCVE things happen.
