@@ -9,7 +9,7 @@ Currently, I've got:
   - [tools/aha-gcve-validator.rb](https://github.com/hugesuccessllc/gcve/blob/main/tools/aha-gcve-validator.rb): A basic validator for those two things.
   - [tools/aha-gcveify.rb](https://github.com/hugesuccessllc/gcve/blob/main/tools/aha-gcveify.rb): A converter MITRE CVE records to AHA!-flavored GCVE records. Adjust to taste.
   - `tools/worker.js` : The Cloudflare Worker script (running at https://aha-gcve.todb.workers.dev/). Implements a minimal API per [BCP-3](https://gcve.eu/bcp/gcve-bcp-03/).
-  - 
+
 Enjoy! Not fit for any purpose, 2-Clause BSD licensed, etc.
 
 # DNS Spaghetti
