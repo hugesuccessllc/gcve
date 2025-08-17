@@ -36,6 +36,7 @@ async function handleRequest(request) {
 
   // /api/vulnerability/recent
   if (pathname.startsWith("/api/vulnerability/recent")) {
+    // Return vulnerabilities after a given date (default: last 24h)
     const sinceParam = params.get("since"); // ISO 8601 string or YYYY-MM-DD
     const limit = parseInt(params.get("limit") || "10", 10);
 
@@ -59,6 +60,7 @@ async function handleRequest(request) {
 
   // /api/vulnerability/last
   if (pathname.startsWith("/api/vulnerability/last")) {
+    // Return latest N vulnerabilities
     const limit = parseInt(params.get("limit") || "10", 10);
     result = objects.slice(0, limit);
     return new Response(JSON.stringify(result), {
@@ -68,12 +70,29 @@ async function handleRequest(request) {
 
   // /dumps/gna-1337.ndjson
   if (pathname === "/dumps/gna-1337.ndjson") {
+    // Serve the raw NDJSON dump
     return new Response(text, {
       headers: { "Content-Type": "application/x-ndjson" },
     });
   }
 
-  // Fail everything else.
+  // Wrong extension for the dumps
+  if (pathname === "/dumps/gna-1337.json") {
+    return new Response(
+      JSON.stringify({
+        error: "Dangit Bobby, use /dumps/gna-1337.ndjson instead",
+      }),
+      {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          "X-GCVE-AHA-Error": "Wrong filetype extension!",
+        },
+      },
+    );
+  }
+
+  // Fallback for unknown routes
   return new Response(JSON.stringify({ error: "Dangit Bobby!" }), {
     status: 404,
     headers: { "Content-Type": "application/json" },
