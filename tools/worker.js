@@ -2,9 +2,20 @@ addEventListener("fetch", (event) => {
   event.respondWith(handleRequest(event.request));
 });
 
-// I'm vibing as hard as I possibly can.
+// I'm vibing as hard as I possibly can
 
 const DUMP_URL = "https://hugesuccess.org/gcve/dumps/gna-1337.ndjson";
+
+function getAhaDate(obj) {
+  try {
+    const pm = obj?.containers?.cna?.providerMetadata;
+    if (pm?.shortName === "AHA" && pm?.dateUpdated) {
+      const d = new Date(pm.dateUpdated);
+      if (!isNaN(d.getTime())) return d;
+    }
+  } catch (e) {}
+  return null;
+}
 
 async function handleRequest(request) {
   const url = new URL(request.url);
@@ -24,14 +35,9 @@ async function handleRequest(request) {
         return null;
       }
     })
-    .filter(
-      (obj) =>
-        obj && obj.datePublic && !isNaN(new Date(obj.datePublic).getTime()),
-    );
+    .filter((obj) => getAhaDate(obj) !== null);
 
-  // Sort descending by datePublic
-  objects.sort((a, b) => new Date(b.datePublic) - new Date(a.datePublic));
-
+  objects.sort((a, b) => getAhaDate(b) - getAhaDate(a));
   let result = [];
 
   // /api/vulnerability/recent
@@ -47,10 +53,10 @@ async function handleRequest(request) {
         ? new Date(Date.now() - 24 * 60 * 60 * 1000)
         : parsed;
     } else {
-      sinceDate = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24h ago
+      sinceDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
     }
 
-    result = objects.filter((obj) => new Date(obj.datePublic) >= sinceDate);
+    result = objects.filter((obj) => getAhaDate(obj) >= sinceDate);
     result = result.slice(0, limit);
 
     return new Response(JSON.stringify(result), {
@@ -92,7 +98,7 @@ async function handleRequest(request) {
     );
   }
 
-  // Fallback for unknown routes
+  // Fallback
   return new Response(JSON.stringify({ error: "Dangit Bobby!" }), {
     status: 404,
     headers: { "Content-Type": "application/json" },
