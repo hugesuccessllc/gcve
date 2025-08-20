@@ -56,6 +56,6 @@ cve_record = JSON.parse(response.body)
 cve_metadata = cve_record['cveMetadata'] || {}
 cve_metadata['vulnId']  = gcve_id
 cve_metadata['serial']  = options[:serial]
-cve_record['Metadata'] = cve_metadata
+cve_record['cveMetadata'] = cve_metadata
 
 puts options[:pretty] ? JSON.pretty_generate(cve_record) : cve_record.to_json
