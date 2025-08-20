@@ -4,7 +4,10 @@ A place to mess around with GCVE things. Maybe someone else will find this helpf
 
 ## Publishing GCVEs
 
-In order to publish with the current scheme, all we need to do is grab the relevant CVEs, and dump them to the API-designated dump. Then we let a very lighweight CloudFlare worker do the business of sorting by date and returning what's requested.
+In order to publish with the current scheme, all we need to do is grab the
+relevant CVEs, drop in our local version, and dump them to the API-designated
+dump. Then we let a very lighweight CloudFlare worker do the business of sorting
+by date and returning what's requested.
 
 This all amounts to:
 
@@ -12,8 +15,6 @@ This all amounts to:
 curl https://cveawg.mitre.org/api/cve/CVE-2025-8452 > GCVE-1337-2025-00000000000000000000000000000000000000000000000001011111011111010111111001000000000000000000000000000000000000000000000000000000001.json
 awk 1 GCVE-1337-2025-00000000000000000000000000000000000000000000000001011111011111010111111001000000000000000000000000000000000000000000000000000000001.json >> dumps/gna-1337.ndjson
 ```
-
-I'll bash together a shell script to do this with a little more sensibility.
 
 ## Format experiments!
 
@@ -24,6 +25,7 @@ Now ideally, I would be able to write my GCVEs by deriving from CVEv5. According
   - [test-gcve-sample.json](https://raw.githubusercontent.com/hugesuccessllc/gcve/refs/heads/main/test-gcve-sample.json) : A test GCVE record conforming to the AHA! format. **Not for production!**
   - [tools/aha-gcve-validator.rb](https://github.com/hugesuccessllc/gcve/blob/main/tools/aha-gcve-validator.rb): A basic validator for those two things.
   - [tools/aha-gcveify.rb](https://github.com/hugesuccessllc/gcve/blob/main/tools/aha-gcveify.rb): A converter MITRE CVE records to AHA!-flavored GCVE records. Adjust to taste.
+  - [tools/lu-gcveify.rb]()): A converter MITRE CVE records to AHA!-flavored GCVE records. Adjust to taste.
   - `tools/worker.js` : The Cloudflare Worker script (running at https://aha-gcve.todb.workers.dev/). Implements a minimal API per [BCP-3](https://gcve.eu/bcp/gcve-bcp-03/).
 
 Enjoy! Not fit for any purpose, 2-Clause BSD licensed, etc.
