@@ -16,6 +16,16 @@ awk 1 GCVE-1337-2025-00000000000000000000000000000000000000000000000001011111011
 
 This is mostly automated with `lu-gcveify.rb`, which fetches, edits, and concats with the dump file.
 
+### AHA!'s GCVE API
+
+The minimally-compliant API is at https://aha-gcve.todb.workers.dev and supports the following:
+
+* https://aha-gcve.todb.workers.dev/api/vulnerability/recent?since=2025-09-01 (`since` is optional, defaults to last 24 hours)
+* https://aha-gcve.todb.workers.dev/api/vulnerability/last?limit=67 (`last` is optional, defaults to last 10)
+* https://aha-gcve.todb.workers.dev/api/dumps/gna-1337.ndjson (The full dump of all vulnerabilities from AHA! with GCVE IDs)
+
+All other API calls will produce an amusing error. Asking for `gna-1337.json` will provide a helpful tip to remember that it's **nd**json.
+
 ## Format experiments!
 
 Now ideally, I would be able to write my GCVEs by deriving from CVE JSONv5. According to
