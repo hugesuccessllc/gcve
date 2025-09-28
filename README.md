@@ -10,9 +10,11 @@ This all amounts to:
 
 ```
 curl https://cveawg.mitre.org/api/cve/CVE-2025-8452 > GCVE-1337-2025-00000000000000000000000000000000000000000000000001011111011111010111111001000000000000000000000000000000000000000000000000000000001.json
-# edit in the vulnId, right after the dateUpdated field. TODO: script this!
+# edit in the vulnId
 awk 1 GCVE-1337-2025-00000000000000000000000000000000000000000000000001011111011111010111111001000000000000000000000000000000000000000000000000000000001.json >> dumps/gna-1337.ndjson
 ```
+
+This is mostly automated with `lu-gcveify.rb`, which fetches, edits, and concats with the dump file.
 
 ## Format experiments!
 
@@ -27,7 +29,7 @@ This isn't useful for the current GCVE implementations, where they expect a bunc
   - [test-gcve-sample.json](https://raw.githubusercontent.com/hugesuccessllc/gcve/refs/heads/main/test-gcve-sample.json) : A test GCVE record conforming to the AHA! format. **Not for production!**
   - [tools/aha-gcve-validator.rb](https://github.com/hugesuccessllc/gcve/blob/main/tools/aha-gcve-validator.rb): A basic validator for those two things.
   - [tools/aha-gcveify.rb](https://github.com/hugesuccessllc/gcve/blob/main/tools/aha-gcveify.rb): A converter MITRE CVE records to AHA!-flavored GCVE records. Adjust to taste.
-  - [tools/lu-gcveify.rb]()): A converter MITRE CVE records to AHA!-flavored GCVE records. Adjust to taste.
+  - [tools/lu-gcveify.rb](https://github.com/hugesuccessllc/gcve/blob/main/tools/lu-gcveify.rb)): A converter MITRE CVE records to the most basic form of a GCVE record.
   - `tools/worker.js` : The Cloudflare Worker script (running at https://aha-gcve.todb.workers.dev/). Implements a minimal API per [BCP-3](https://gcve.eu/bcp/gcve-bcp-03/).
 
 Enjoy! Not fit for any purpose, 2-Clause BSD licensed, etc.
