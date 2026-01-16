@@ -52,4 +52,4 @@ AHA!'s GCVEness is expressed across several domains at the moment:
 - [hugesuccess.org](https://hugesuccess.org) : Tod's internet-exposed sandbox for web shenanigans.
 - `aha-gcve.todb.workers.dev` : A CloudFlare worker instance, free-tier, for fronting API calls. Capped at 10,000 requests or some such.
 - [gcve.eu](https://gcve.eu) : More info about GCVE, and notably, where the canonical index of all GCVE providers are listed, at [gcve.json](https://gcve.eu/dist/gcve.json).
-- [https://vulnerability.circl.lu/recent#gna-1337](https://vulnerability.circl.lu/recent#gna-1337) : An endpoint to see the fruits of AHA!'s GCVE labor.
+- [vulnerability.circl.lu/](https://vulnerability.circl.lu/recent#gna-1337) : An endpoint to see the fruits of AHA!'s GCVE labor.
